@@ -16,13 +16,14 @@ obf_varmin = 69 # min 50 or it might have duplicates
 obf_varmax = 420 # max 1000 or it might crash
 
 # -> Useless Code Adder Settings
-obf_add_cmdc = True
-obf_add_cmdc_chance = 100 # in %
-obf_add_cmdc_cmd = "cmd /c echo Nope"
-
-obf_add_echonul = True
-obf_add_echonul_chance = 100 # in %
-obf_add_echonul_cmd = "echo>nul Nop"
+obf_add_cmds_chance = 100 # in % after every line (100 is always 0 is never)
+obf_add_cmds_times = 10 # how many lines junk to add when a junk event triggers
+obf_add_cmds_list = [
+    "cmd /c echo>nul Nope",
+    "echo>nul Nop",
+    "cd>nul",
+    "rem dont even try"
+] # list of dummy commands to select from
 
 # utility
 def random_string_generator(min, max):
@@ -31,7 +32,7 @@ def log(str):
     print("-> " + str)
 
 # files
-infile = "in.cmd"
+infile = "in.bat"
 outfile = "asfd.cmd"
 log(f"In File: {infile}")
 log(f"Out File: {outfile}")
@@ -62,7 +63,7 @@ log("Done!")
 
 # use headers on code
 log("Obfuscating Code using mappings")
-ignore = [' ', '.', '=', '%', '/', '>']
+ignore = string.digits + string.whitespace + string.punctuation
 def obfuscate(line):
     obfl = ""
     for char in line:
@@ -77,14 +78,10 @@ for line in lines_pre:
     if(tra_charvar_rename):
         lines_obf.append(obfuscate(line))
     if(tra_uselesscode_troll):
-        if(obf_add_cmdc):
-            num = random.randrange(0, 100)
-            if(num < obf_add_cmdc_chance):
-                lines_obf.append(obfuscate(obf_add_cmdc_cmd))
-        if(obf_add_echonul):
-            num = random.randrange(0, 100)
-            if(num < obf_add_echonul_chance):
-                lines_obf.append(obfuscate(obf_add_echonul_cmd))
+        num = random.randrange(0, 100)
+        if(num < obf_add_cmds_chance):
+            for i in range(obf_add_cmds_times):
+                lines_obf.append(obfuscate(random.choice(obf_add_cmds_list)))
 
 
 log(f"Obfuscated {str(len(lines_pre))} Lines")
