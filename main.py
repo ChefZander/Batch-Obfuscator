@@ -5,37 +5,38 @@ print("(c) Chef Zander - 2022")
 print("-> included in Zander's Toolbox")
 print()
 
-# config
+def log(str):
+    print("-> " + str)
+
+# ================= CONFIGURATION ==================
+# -> files
+infile = "in.bat" # file to obfuscate
+outfile = "asfd.cmd" # file to output obfuscated code
+log(f"In File: {infile}")
+log(f"Out File: {outfile}")
+
 # -> Transformers
-tra_charvar_rename = True
-tra_uselesscode_troll = True
+tra_charvar_rename = True # Replaces each character with a variable, windows is weird and then evaluates the contents, makes the code VERY difficult to manually reverse
+tra_uselesscode_troll = True # adds useless code statements (obfuscated too) to slow manual reversal
 
 # -> Character-Variable Renamer Settings
 obf_charset = string.ascii_letters # complicated, just leave it unless you know what you are doing
-obf_varmin = 69 # min 50 or it might have duplicates
-obf_varmax = 420 # max 1000 or it might crash
+obf_varmin = 69 # minimum variable length - more than 50 or it might have duplicates
+obf_varmax = 420 # maximum variable length - less than 1000 or it might crash
 
 # -> Useless Code Adder Settings
-obf_add_cmds_chance = 100 # in % after every line (100 is always 0 is never)
-obf_add_cmds_times = 10 # how many lines junk to add when a junk event triggers
+obf_add_cmds_chance = 100 # chance of a 'junk event' triggering every line in % (100 is always 0 is never)
+obf_add_cmds_times = 10 # how many lines junk to add when a 'junk event' triggers
 obf_add_cmds_list = [
     "cmd /c echo>nul Nope",
     "echo>nul Nop",
     "cd>nul",
     "rem dont even try"
-] # list of dummy commands to select from
+] # list of junk commands to select from
 
 # utility
 def random_string_generator(min, max):
     return ''.join(random.choice(obf_charset) for x in range(random.randrange(min, max)))
-def log(str):
-    print("-> " + str)
-
-# files
-infile = "in.bat"
-outfile = "asfd.cmd"
-log(f"In File: {infile}")
-log(f"Out File: {outfile}")
 
 # lines
 lines_raw = []
