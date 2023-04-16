@@ -1,7 +1,7 @@
 import random, string, io
 
 print("=== Zander's Batch Obfuscator ===")
-print("(c) Chef Zander - 2022")
+print("(c) Zander - 2023 <zander.gq>")
 print("-> included in Zander's Toolbox")
 print()
 
